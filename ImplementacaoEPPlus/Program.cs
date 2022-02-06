@@ -1,8 +1,8 @@
-﻿// Para utilizar o EpPlus é necessário informar o tipo de licença
-using OfficeOpenXml;
+﻿using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using System.Drawing;
 
+// Para utilizar o EpPlus é necessário informar o tipo de licença
 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 // ExcelPackage.LicenseContext = LicenseContext.Commercial;
 
@@ -31,27 +31,34 @@ using (ExcelPackage ep = new())
 
     // Personalização
     planilha.Rows.Style.Font.Bold = true; // Altera todas as linhas
-    planilha.Row(1).Style.Font.Bold = true; // Negrido em toda linha 1
-    planilha.Row(2).Style.Fill.PatternType = ExcelFillStyle.Solid; //Modifica o padrão da linha, fundo solido, por exemplo
-    planilha.Row(2).Style.Fill.BackgroundColor.SetColor(Color.Black); // Alterar a cor de toda linha 2 - precisa que a patternType seja informada antes para funcionar
+   // planilha.Row(1).Style.Font.Bold = true; // Negrido em toda linha 1
+   // planilha.Row(2).Style.Fill.PatternType = ExcelFillStyle.Solid; //Modifica o padrão da linha, fundo solido, por exemplo
+   // planilha.Row(2).Style.Fill.BackgroundColor.SetColor(Color.Black); // Alterar a cor de toda linha 2 - precisa que a patternType seja informada antes para funcionar
     segundaPlanilha.Column(1).Style.Font.Italic = true; // Italico em toda coluna A
     segundaPlanilha.Column(2).Width = 55; // Alterar largura da coluna
     segundaPlanilha.Row(1).Height = 55; // Altera tamanho da linha
     segundaPlanilha.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Left; //Alinhamento a esquerda
-    planilha.Cells["A1"].Style.Font.Color.SetColor(Color.Red);
+   // planilha.Cells["A1"].Style.Font.Color.SetColor(Color.Red);
 
     // Proteção da planilha
-    planilha.Protection.IsProtected = true; // Protege toda a planilha
+    /*planilha.Protection.IsProtected = false; // Protege toda a planilha
     planilha.Protection.AllowInsertColumns = true; // Permite criar colunas
     planilha.Protection.SetPassword("seila"); // Atribui password para a proteção
     planilha.Protection.AllowSelectLockedCells = false; // Permissão de selecionar celulas bloqueadas
     planilha.Cells.Style.Locked = true;  // bloqueia as celulas
-    planilha.Cells.Style.Hidden = true; // Oculta o conteudo da celula
+    planilha.Cells.Style.Hidden = true; // Oculta o conteudo da celula*/
+
+    // Criando uma tabela
+    planilha.Tables.Add(planilha.Cells["A1:D4"], "novatabela");
+    planilha.Tables[0].ShowFilter = false;
+    planilha.Tables[0].TableStyle = OfficeOpenXml.Table.TableStyles.Dark7;
+    planilha.Tables[0].TableBorderStyle.BorderAround(ExcelBorderStyle.Dotted);
+    planilha.Tables[0].Columns[0].Name = "Nome";
+    planilha.Tables[0].Columns[1].Name = "Idade";
+    planilha.Tables[0].Columns[2].Name = "Nacionalidade";
+    planilha.Tables[0].Columns[3].Name = "Naturalidade";
 
     // Inclusão de valores nas celulas
-    planilha.Cells["A1"].Value = "primeira celula";
-    planilha.Cells["C1"].Value = "terceira celula";
-    planilha.Cells[1, 2].Value = "segunda celula"; // B1 = primeira linha, segunda coluna
     segundaPlanilha.Cells["A1"].Value = "Eis aqui uma tentativa de inclusão de formula:";
 
     segundaPlanilha.Cells["A2"].Style.Numberformat.Format = "_-$* #,##0.00_-;-$* #,##0.00_-;_-$* \"-\"??_-;_-@_-";
